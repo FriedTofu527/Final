@@ -1,20 +1,23 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Reflection;
 using UnityEngine;
 
 public class movePlayer : MonoBehaviour
 {
-    public static float speedG = 4;
     private bool shift = false;
     private bool ctrl = false;
     public static float x;
     public static float z;
     public static float y;
+    public float speedG = 4;
     private float horizontalInput;
     private float verticalInput;
     private float jumpCount;
+    public float totalHealth = 2;
     private Vector3 jump;
-    Rigidbody body;
+    public Rigidbody body;
+    public GameObject loser;
     public GameObject Sphere;
     public AudioSource soundPlayer;
     public AudioClip crash;
@@ -23,6 +26,8 @@ public class movePlayer : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        loser.SetActive(false);
+        Cursor.lockState = CursorLockMode.Locked;
         body = GetComponent<Rigidbody>();
         jump = new Vector3(0, 60, 0);
         soundPlayer = GetComponent<AudioSource>();
@@ -79,8 +84,21 @@ public class movePlayer : MonoBehaviour
 
         if (Input.GetMouseButtonDown(0))
         {
-            Instantiate(Sphere, transform.position, Quaternion.Euler(moveCamera.pitch, moveCamera.yaw / 2, 0));
+            Instantiate(Sphere, transform.position, Quaternion.Euler(moveCamera.pitch, moveCamera.yaw, 0));
             soundPlayer.PlayOneShot(crash, 1);
+            totalHealth++;
+            moveCamera.pitch -= 1;
+        }
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        totalHealth--;
+
+        if (totalHealth <= 0)
+        {
+            transform.Translate(10000, 10000, 10000);
+            loser.SetActive(true);
         }
     }
 }

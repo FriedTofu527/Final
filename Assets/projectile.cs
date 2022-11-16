@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class projectile : MonoBehaviour
 {
+    public GameObject self;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -17,7 +19,7 @@ public class projectile : MonoBehaviour
 
         if (GetComponent<BoxCollider>())
         {
-            Destroy(this);
+            Destroy(self);
         }
     }
 }

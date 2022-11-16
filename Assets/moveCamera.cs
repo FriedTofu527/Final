@@ -20,7 +20,7 @@ public class moveCamera : MonoBehaviour
     {
         yaw += speedH * Input.GetAxis("Mouse X");
         pitch -= speedV * Input.GetAxis("Mouse Y");
-        transform.eulerAngles = new Vector3(pitch, yaw, 0);
+        transform.eulerAngles = new Vector3(2 * pitch, 2 * yaw, 0);
         transform.position = new Vector3(movePlayer.x, movePlayer.y, movePlayer.z);
     }
 }
